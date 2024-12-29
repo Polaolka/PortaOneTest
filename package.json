@@ -1,21 +1,21 @@
 {
-  "name": "portaonetest",
+  "name": "PortaOneTest",
   "version": "1.0.0",
   "description": "Puzzle app as test task",
-  "homepage": "https://github.com/Polaolka/Puzzle-app",
+  "homepage": "https://github.com/Polaolka/PortaOneTest",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /Puzzle-app/",
+    "build": "parcel build src/*.html --public-url /PortaOneTest/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Polaolka/Puzzle-app.git"
+    "url": "git+https://github.com/Polaolka/PortaOneTest.git"
   },
   "keywords": [],
   "author": "Olha Polishchuk",
   "bugs": {
-    "url": "https://github.com/Polaolka/Puzzle-app/issues"
+    "url": "https://github.com/Polaolka/PortaOneTest/issues"
   },
   "license": "ISC",
   "dependencies": {
