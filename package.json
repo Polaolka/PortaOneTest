@@ -1,0 +1,29 @@
+{
+  "name": "portaonetest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/*.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "modern-normalize": "^3.0.1",
+    "sass": "^1.83.0"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.13.3",
+    "@parcel/transformer-sass": "^2.13.3",
+    "@parcel/transformer-webmanifest": "^2.13.3",
+    "buffer": "^6.0.3",
+    "cssnano": "^7.0.6",
+    "parcel": "^2.13.3",
+    "parcel-reporter-clean-dist": "^1.0.4",
+    "postcss": "^8.4.49",
+    "posthtml-include": "^2.0.1"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
+}

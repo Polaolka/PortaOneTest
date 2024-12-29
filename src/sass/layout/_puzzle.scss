@@ -1,0 +1,35 @@
+@use '../utils/mixins' as utilsMixins;
+
+.file-input {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-input-wrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+/* Ховер ефект */
+.file-label:hover {
+  background-color: #0056b3;
+}
+
+/* При фокусі */
+.file-input:focus + .file-label {
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
+}

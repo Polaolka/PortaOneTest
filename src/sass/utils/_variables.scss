@@ -1,0 +1,30 @@
+:root {
+  /* Fonts */
+  --main-font: 'Poppins', Verdana, Arial, Helvetica, sans-serif;
+  /* Footer font */
+  --secondary-font: 'Roboto', sans-serif;
+
+  /* Text colors */
+  --light-text-cl: #FCFCFC;
+  --main-text-cl: #fd5103;
+  --white-cl: #ffffff;
+  --secondary-text-cl: rgba(0, 0, 0, 0.6);
+  --modal-text-cl: #5f6775;
+
+  /* Text colors */
+  --main-text-cl: #fd5103;
+  --white-cl: #ffffff;
+  --black-text-cl: #202025;
+  --gray-text-cl: #5f6775;
+  /* btn colors */
+
+  --default-btn-cl: #fe7031;
+  --disabled-btn-cl: #d7d7d7;
+  --btn-bg-color: #fdfdfd;
+  --btn-border-color: #eaebea;
+  /* Others */
+  --b-radius: 4px;
+
+  --anim-fast: 300ms ease;
+  --anim-slow: 600ms ease-in-out;
+}

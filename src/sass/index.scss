@@ -1,0 +1,12 @@
+@use 'utils/mixins' as utilsMixins;
+@use 'utils/variables';
+@use 'utils/reset';
+@use 'utils/placeholders';
+
+@use 'vendors/base';
+@use 'vendors/common';
+@use 'vendors/container';
+
+@use 'layout/header';
+@use 'layout/info';
+@use 'layout/puzzle';
