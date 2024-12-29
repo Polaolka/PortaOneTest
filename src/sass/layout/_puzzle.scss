@@ -1,5 +1,25 @@
 @use '../utils/mixins' as utilsMixins;
 
+.puzzle-txt {
+  @include utilsMixins.fonts(
+    $fw: 400,
+    $fs: 18px,
+    $lh: calc(72px / 48px),
+    $color: var(--black-text-cl)
+  );
+  margin-bottom: 16px;
+}
+
+.puzzle-result {
+  @include utilsMixins.fonts(
+    $fw: 600,
+    $fs: 24px,
+    $lh: calc(72px / 48px),
+    $color: var(--black-text-cl)
+  );
+  margin-bottom: 8px;
+}
+
 .file-input {
   opacity: 0;
   position: absolute;
@@ -14,22 +34,26 @@
 .file-label {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: var(--default-btn-cl);
   color: #fff;
   font-size: 16px;
   border-radius: 5px;
+  @include utilsMixins.fonts(
+    $fw: 400,
+    $fs: 18px,
+    $lh: calc(72px / 48px),
+    $color: var(--light-text-cl)
+  );
   cursor: pointer;
   text-align: center;
   transition: background-color 0.3s ease;
 }
 
-/* Ховер ефект */
 .file-label:hover {
-  background-color: #0056b3;
+  background-color: var(--hover-btn-cl);
 }
 
-/* При фокусі */
 .file-input:focus + .file-label {
-  outline: 2px solid #0056b3;
+  outline: 2px solid var(--hover-btn-cl);
   outline-offset: 2px;
 }
