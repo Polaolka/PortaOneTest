@@ -53,20 +53,6 @@
   }
 }
 
-.flex-wrapper.theme {
-  display: none;
-  align-items: center;
-  gap: 12px;
-  padding-top: 0;
-
-  @include utilsMixins.mq(desktop) {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 0;
-  }
-}
-
 .input {
   padding-left: 65px;
   border: 1px solid var(--main-text-cl);

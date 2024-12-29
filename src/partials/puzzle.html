@@ -1,16 +1,31 @@
 <section class="puzzle">
   <div class="container">
+    <p class="puzzle-txt">Для початку оберіть точність розрахунків:</p>
+
+    <div class="flex-wrapper-precision">
+      <p class="precision-txt precision-item">Швидко але, можливо, не точно</p>
+      <div>
+        <label class="switch">
+          <input type="checkbox" class="precision-toggler" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <p class="precision-txt precision-item">
+        Точно, але довше (для великих наборів можливо ДУУУЖЕ довго)
+      </p>
+    </div>
     <p class="puzzle-txt">
-      Спробуйте! Завантажте текстовий файл, що містить лише цілі числа,
-      розділені пробілами, комами або переносом на новий рядок:
+      Тепер завантажте текстовий файл, що містить лише цілі числа, розділені
+      пробілами, комами або переносом на новий рядок:
     </p>
 
     <div class="file-input-wrapper">
       <label for="fileInput" class="file-label">Виберіть файл</label>
       <input type="file" id="fileInput" accept=".txt" class="file-input" />
     </div>
-    <div class="puzzle-result" id="result"></div>
-    <div class="puzzle-result" id="result2"></div>
-    <div class="puzzle-result" id="result3"></div>
+    <p class="puzzle-info" id="puzzle-info"></p>
+    <p class="puzzle-result" id="result"></p>
+    <p class="puzzle-result" id="result2"></p>
+    <p class="puzzle-result" id="result3"></p>
   </div>
 </section>
