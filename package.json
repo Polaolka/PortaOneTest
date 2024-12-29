@@ -1,16 +1,23 @@
 {
   "name": "portaonetest",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Puzzle app as test task",
+  "homepage": "https://github.com/Polaolka/Puzzle-app",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build src/*.html --public-url /EasyTeam-JS-Project/",
+    "build": "parcel build src/*.html --public-url /Puzzle-app/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Polaolka/Puzzle-app.git"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Olha Polishchuk",
+  "bugs": {
+    "url": "https://github.com/Polaolka/Puzzle-app/issues"
+  },
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "modern-normalize": "^3.0.1",
     "sass": "^1.83.0"
