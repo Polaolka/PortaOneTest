@@ -12,6 +12,11 @@
 }
 .precision-item {
   flex-basis: calc((100% - 64px) / 2);
+  font-style: italic;
+}
+
+.precision-item.first {
+  text-align: right;
 }
 
 .switch {
