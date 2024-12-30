@@ -61,61 +61,58 @@ async function findLongestPathWithOptimization(numbers) {
   let longestPath = [];
   let calculationInterrupted = false;
 
+  console.log('Граф збудований:', graph);
+
   const timer = setTimeout(() => {
     calculationInterrupted = true;
-  }, 60000);
+  }, 120000);
 
-  console.log("'Жадібна' оптимізація");
-
-  const filteredNumbers = filterNumbers(numbers);
+  // 1. Запуск 'жадібної' стратегії
+  console.log("Запуск 'жадібної' оптимізації...");
   let greedyMaxPath = [];
-
-  for (let start of filteredNumbers) {
+  for (let start of numbers) {
     if (calculationInterrupted) break;
+
     const greedyPathResult = await greedyPath({
       start,
-      calculationInterrupted,
       graph,
+      calculationInterrupted,
     });
+
     if (greedyPathResult.length > greedyMaxPath.length) {
       greedyMaxPath = greedyPathResult;
     }
   }
 
+  // 2. Виконуємо DFS лише за потреби
   if (precisionChecker.highPrecision) {
-    console.log('рахуємо довго!');
-    document.getElementById('puzzle-info').textContent = 'Pахуємо довго!';
-    await new Promise(resolve => setTimeout(resolve, 0));
-
-    for await (let start of filteredNumbers) {
+    console.log('Запуск DFS для високої точності...');
+    for (let start of numbers) {
       if (calculationInterrupted) break;
+
       const path = await dfs({
-        current: start,
-        path: [start],
-        calculationInterrupted,
+        start,
         graph,
+        calculationInterrupted,
       });
+
       if (path.length > longestPath.length) {
         longestPath = path;
       }
     }
-
-    clearTimeout(timer);
-
-    if (calculationInterrupted) {
-      document.getElementById('result').textContent =
-        'Обчислення зайняло забагато часу. Виберіть меншу точність і повторіть спробу.';
-      return [];
-    }
-
-    return longestPath.length > greedyMaxPath.length
-      ? longestPath
-      : greedyMaxPath;
   }
 
   clearTimeout(timer);
 
-  return greedyMaxPath;
+  if (calculationInterrupted) {
+    document.getElementById('result').textContent =
+      'Обчислення зайняло забагато часу. Спробуйте зменшити набір чисел.';
+    return [];
+  }
+
+  return longestPath.length > greedyMaxPath.length
+    ? longestPath
+    : greedyMaxPath;
 }
 
 function buildCombinedString(longestPath) {
