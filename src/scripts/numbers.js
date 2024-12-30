@@ -15,6 +15,7 @@ function handleChoicePrecision(e) {
 
 function handleFile(event) {
   document.getElementById('puzzle-info').textContent = '';
+  document.getElementById('result').textContent = '';
   const file = event.target.files[0];
   if (!file) {
     alert('Будь ласка, виберіть файл.');
@@ -23,20 +24,16 @@ function handleFile(event) {
   let result = '';
   let longestPath = [];
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = async function (e) {
     const content = e.target.result;
     const numbers = content
       .split(/[\s,]+/)
       .filter(Boolean)
       .filter(str => /^\d+$/.test(str));
 
-    // Виконуємо обчислення
-    longestPath = findLongestPathWithOptimization(numbers);
+    longestPath = await findLongestPathWithOptimization(numbers);
     result = buildCombinedString(longestPath);
     document.getElementById('result').textContent = `Результат: ${result}`;
-
-    console.log('Найдовший ланцюжок:', longestPath);
-    console.log("Об'єднаний рядок:", result);
   };
   reader.readAsText(file);
   event.target.value = '';
@@ -58,100 +55,46 @@ function buildGraph(numbers) {
   return graph;
 }
 
-// Фільтрація чисел, які не можуть бути частиною довгого шляху
-function filterNumbers(numbers) {
-  console.log('Фільтрація чисел, які не можуть бути частиною довгого шляху');
-
-  const prefixes = new Set(numbers.map(num => num.slice(0, 2)));
-  const suffixes = new Set(numbers.map(num => num.slice(-2)));
-  return numbers.filter(
-    num => prefixes.has(num.slice(-2)) || suffixes.has(num.slice(0, 2))
-  );
-}
-
-function findLongestPathWithOptimization(numbers) {
+async function findLongestPathWithOptimization(numbers) {
   const graph = buildGraph(numbers);
-  const memo = new Map();
+
   let longestPath = [];
   let calculationInterrupted = false;
-  console.log('calculationInterrupted', calculationInterrupted);
 
   const timer = setTimeout(() => {
     calculationInterrupted = true;
-  }, 60000); // 60 секунд
+  }, 60000);
 
-  // Жадібна оптимізація для раннього грубого розв'язку
-  console.log("Жадібна оптимізація для раннього грубого розв'язку");
-
-  function greedyPath(start) {
-    const path = [start];
-    let current = start;
-    if (calculationInterrupted) {
-      return [];
-    } // Зупинити, якщо час вичерпано
-    while (true) {
-      const suffix = current.slice(-2);
-      const candidates = (graph[suffix] || []).filter(
-        next => !path.includes(next)
-      );
-      if (candidates.length === 0) break;
-      current = candidates[0];
-      path.push(current);
-    }
-    return path;
-  }
-
-  // Точний DFS з мемоізацією
-  function dfs(current, path) {
-    if (calculationInterrupted) {
-      console.log(
-        'Обчислення зайняло забагато часу. Виберіть меншу точність і повторіть спробу.'
-      );
-
-      document.getElementById('result').textContent =
-        'Обчислення зайняло забагато часу. Виберіть меншу точність і повторіть спробу.';
-      return [];
-    }
-    const key = `${current}:${path.join(',')}`;
-    if (memo.has(key)) return memo.get(key);
-
-    const suffix = current.slice(-2);
-    const nextNumbers = graph[suffix] || [];
-    let maxPath = [...path];
-
-    for (let next of nextNumbers) {
-      if (!path.includes(next)) {
-        const newPath = dfs(next, [...path, next]);
-        if (newPath.length > maxPath.length) {
-          maxPath = newPath;
-        }
-      }
-    }
-
-    memo.set(key, maxPath);
-    return maxPath;
-  }
+  console.log("'Жадібна' оптимізація");
 
   const filteredNumbers = filterNumbers(numbers);
   let greedyMaxPath = [];
 
-  // Виконуємо жадібний алгоритм для кожного стартового числа
   for (let start of filteredNumbers) {
     if (calculationInterrupted) break;
-    const greedyPathResult = greedyPath(start);
+    const greedyPathResult = await greedyPath({
+      start,
+      calculationInterrupted,
+      graph,
+    });
     if (greedyPathResult.length > greedyMaxPath.length) {
       greedyMaxPath = greedyPathResult;
     }
   }
+
   if (precisionChecker.highPrecision) {
-    console.log(precisionChecker.highPrecision);
     console.log('рахуємо довго!');
     document.getElementById('puzzle-info').textContent = 'Pахуємо довго!';
+    await new Promise(resolve => setTimeout(resolve, 0));
 
-    // DFS з урахуванням знайденого грубого розв'язку
-    for (let start of filteredNumbers) {
+    for await (let start of filteredNumbers) {
       if (calculationInterrupted) break;
-      const path = dfs(start, [start]);
+      const path = await dfs({
+        current: start,
+        path: [start],
+        calculationInterrupted,
+        graph,
+      });
       if (path.length > longestPath.length) {
         longestPath = path;
       }
@@ -169,6 +112,9 @@ function findLongestPathWithOptimization(numbers) {
       ? longestPath
       : greedyMaxPath;
   }
+
+  clearTimeout(timer);
+
   return greedyMaxPath;
 }
 
@@ -178,4 +124,64 @@ function buildCombinedString(longestPath) {
     result += longestPath[i].slice(2);
   }
   return result;
+}
+
+function filterNumbers(numbers) {
+  const prefixes = new Set(numbers.map(num => num.slice(0, 2)));
+  const suffixes = new Set(numbers.map(num => num.slice(-2)));
+  return numbers.filter(
+    num => prefixes.has(num.slice(-2)) || suffixes.has(num.slice(0, 2))
+  );
+}
+
+async function greedyPath({ start, calculationInterrupted, graph }) {
+  const path = [start];
+  let current = start;
+  while (true) {
+    if (calculationInterrupted) return [];
+    const suffix = current.slice(-2);
+    const candidates = (graph[suffix] || []).filter(
+      next => !path.includes(next)
+    );
+    if (candidates.length === 0) break;
+    current = candidates[0];
+    path.push(current);
+    await new Promise(resolve => setTimeout(resolve));
+  }
+  return path;
+}
+
+async function dfs({ start, graph, calculationInterrupted }) {
+  const stack = [{ current: start, path: [start] }];
+  let longestPath = [];
+  const visited = new Set();
+
+  while (stack.length > 0) {
+    if (calculationInterrupted) break;
+
+    const { current, path } = stack.pop();
+    if (!current) continue;
+    visited.add(current);
+
+    if (path.length > longestPath.length) {
+      longestPath = path;
+    }
+
+    const suffix = current.slice(-2);
+    const nextNumbers = graph[suffix] || [];
+
+    for (const next of nextNumbers) {
+      if (!path.includes(next)) {
+        stack.push({
+          current: next,
+          path: [...path, next],
+        });
+      }
+    }
+
+    // Додаткова пауза, щоб не блокувати основний потік
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+
+  return longestPath;
 }
