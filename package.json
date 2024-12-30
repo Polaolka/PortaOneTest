@@ -5,7 +5,7 @@
   "homepage": "https://github.com/Polaolka/PortaOneTest",
   "scripts": {
     "start": "parcel src/*.html",
-    "build": "parcel build index.html --public-url ./",
+    "build": "parcel build src/*.html --public-url /PortaOneTest/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
